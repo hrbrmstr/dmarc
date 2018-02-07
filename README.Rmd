@@ -1,0 +1,60 @@
+---
+output: rmarkdown::github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# dmarc
+
+Tools to Machinate DMARC (WIP)
+
+## Description
+
+(this totally needs a 'jalad' function)
+
+## What's Inside The Tin
+
+The following functions are implemented:
+
+- `is_dmarc_valid`:	Test if DMARC records are valid
+ `read_dmarc`:	Read DMARC records for a set of domains
+
+## Installation
+
+```{r eval=FALSE}
+devtools::install_github("hrbrmstr/dmarc")
+```
+
+```{r message=FALSE, warning=FALSE, error=FALSE, include=FALSE}
+options(width=120)
+```
+
+## Usage
+
+```{r message=FALSE, warning=FALSE, error=FALSE}
+library(dmarc)
+
+# current verison
+packageVersion("dmarc")
+```
+
+```{r message=FALSE, warning=FALSE}
+library(gdns)
+library(tidyverse)
+
+doms <- c("linkedin.com", "twitter.com", "google.com", "rud.is", "facebook.com")
+
+# getting dmarc records on our own (note that "rud.is" has no DMARC and is not in the results of the `bulk_query()` call)
+sprintf("_dmarc.%s", doms) %>% 
+  gdns::bulk_query("TXT") -> dmarc_recs
+
+dmarc_recs
+
+glimpse(dmarc_recs)
+
+is_dmarc_valid(doms, pull(dmarc_recs, data))
+
+# using the library to get details (WIP)
+read_dmarc(c("linkedin.com", "twitter.com", "google.com", "rud.is", "facebook.com"))
+```
+
