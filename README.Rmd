@@ -10,6 +10,8 @@ Tools to Machinate DMARC (WIP)
 
 ## Description
 
+NEEDS: [`libopendmarc`](http://www.trusteddomain.org/opendmarc/libopendmarc/index.html).
+
 (this totally needs a 'jalad' function)
 
 ## What's Inside The Tin

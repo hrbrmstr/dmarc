@@ -5,6 +5,9 @@ Tools to Machinate DMARC (WIP)
 
 ## Description
 
+NEEDS:
+[`libopendmarc`](http://www.trusteddomain.org/opendmarc/libopendmarc/index.html).
+
 (this totally needs a ‘jalad’ function)
 
 ## What’s Inside The Tin
@@ -45,10 +48,10 @@ dmarc_recs
 ```
 
     ##                   name type  TTL
-    ## 1 _dmarc.linkedin.com.   16 3599
+    ## 1 _dmarc.linkedin.com.   16 3519
     ## 2  _dmarc.twitter.com.   16  299
     ## 3   _dmarc.google.com.   16  299
-    ## 4 _dmarc.facebook.com.   16 3599
+    ## 4 _dmarc.facebook.com.   16 3520
     ##                                                                                                                    data
     ## 1                                 "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; pct=100"
     ## 2                                    "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1"
@@ -63,7 +66,7 @@ glimpse(dmarc_recs)
     ## Variables: 4
     ## $ name <chr> "_dmarc.linkedin.com.", "_dmarc.twitter.com.", "_dmarc.google.com.", "_dmarc.facebook.com."
     ## $ type <int> 16, 16, 16, 16
-    ## $ TTL  <int> 3599, 299, 299, 3599
+    ## $ TTL  <int> 3519, 299, 299, 3520
     ## $ data <chr> "\"v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; pct=100\"", "\"v=DMARC1...
 
 ``` r
