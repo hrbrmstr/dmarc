@@ -17,3 +17,12 @@ read_dmarc <- function(domains) {
     .Call('_dmarc_read_dmarc', PACKAGE = 'dmarc', domains)
 }
 
+#' Parse already retrieved DMARC records
+#'
+#' @param domains,dmarc_records character vector of domain names and associated
+#'        DMARC records.
+#' @export
+parse_dmarc <- function(domains, dmarc_records) {
+    .Call('_dmarc_parse_dmarc', PACKAGE = 'dmarc', domains, dmarc_records)
+}
+

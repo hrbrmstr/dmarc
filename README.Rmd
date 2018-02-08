@@ -19,7 +19,8 @@ NEEDS: [`libopendmarc`](http://www.trusteddomain.org/opendmarc/libopendmarc/inde
 The following functions are implemented:
 
 - `is_dmarc_valid`:	Test if DMARC records are valid
- `read_dmarc`:	Read DMARC records for a set of domains
+- `parse_dmarc`:	Parse already retrieved DMARC records
+- `read_dmarc`:	Read DMARC records for a set of domains
 
 ## Installation
 
@@ -54,7 +55,11 @@ dmarc_recs
 
 glimpse(dmarc_recs)
 
+# test for validity
 is_dmarc_valid(doms, pull(dmarc_recs, data))
+
+# parse manually retrieved data
+parse_dmarc("linkedin.com", "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; pct=100")
 
 # using the library to get details (WIP)
 read_dmarc(c("linkedin.com", "twitter.com", "google.com", "rud.is", "facebook.com"))

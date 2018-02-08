@@ -14,8 +14,9 @@ NEEDS:
 
 The following functions are implemented:
 
-  - `is_dmarc_valid`: Test if DMARC records are valid `read_dmarc`: Read
-    DMARC records for a set of domains
+  - `is_dmarc_valid`: Test if DMARC records are valid
+  - `parse_dmarc`: Parse already retrieved DMARC records
+  - `read_dmarc`: Read DMARC records for a set of domains
 
 ## Installation
 
@@ -48,10 +49,10 @@ dmarc_recs
 ```
 
     ##                   name type  TTL
-    ## 1 _dmarc.linkedin.com.   16 3519
+    ## 1 _dmarc.linkedin.com.   16 3599
     ## 2  _dmarc.twitter.com.   16  299
     ## 3   _dmarc.google.com.   16  299
-    ## 4 _dmarc.facebook.com.   16 3520
+    ## 4 _dmarc.facebook.com.   16 3599
     ##                                                                                                                    data
     ## 1                                 "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; pct=100"
     ## 2                                    "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; fo=1"
@@ -66,14 +67,23 @@ glimpse(dmarc_recs)
     ## Variables: 4
     ## $ name <chr> "_dmarc.linkedin.com.", "_dmarc.twitter.com.", "_dmarc.google.com.", "_dmarc.facebook.com."
     ## $ type <int> 16, 16, 16, 16
-    ## $ TTL  <int> 3519, 299, 299, 3520
+    ## $ TTL  <int> 3599, 299, 299, 3599
     ## $ data <chr> "\"v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; pct=100\"", "\"v=DMARC1...
 
 ``` r
+# test for validity
 is_dmarc_valid(doms, pull(dmarc_recs, data))
 ```
 
     ## [1] TRUE TRUE TRUE TRUE
+
+``` r
+# parse manually retrieved data
+parse_dmarc("linkedin.com", "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; pct=100")
+```
+
+    ##   has_valid_dmarc  dkim_domain pct adkim aspf   p sp                    rua                    ruf
+    ## 1            TRUE linkedin.com 100   114  114 114  0 mailto:d@rua.agari.com mailto:d@ruf.agari.com
 
 ``` r
 # using the library to get details (WIP)
