@@ -39,21 +39,19 @@ std::vector< bool > is_dmarc_valid(std::vector< std::string> domains,
 
 }
 
-//' Read DMARC records for a set of domains
-//'
-//' @param domains character vector of domain names
-//' @export
 // [[Rcpp::export]]
-DataFrame read_dmarc(std::vector< std::string> domains) {
+DataFrame int_read_dmarc(std::vector< std::string> domains) {
 
   unsigned int dom_size = domains.size();
   std::vector< bool > v_has_valid_dmarc(dom_size);
   std::vector< std::string > v_dkim_domain(dom_size);
-  std::vector< int > v_pct(dom_size);
-  std::vector< int > v_adkim(dom_size);
-  std::vector< int > v_aspf(dom_size);
-  std::vector< int > v_p(dom_size);
-  std::vector< int > v_sp(dom_size);
+
+  IntegerVector v_pct(dom_size);
+  IntegerVector v_adkim(dom_size);
+  IntegerVector v_aspf(dom_size);
+  IntegerVector v_p(dom_size);
+  IntegerVector v_sp(dom_size);
+
   std::vector< std::string > v_rua(dom_size);
   std::vector< std::string > v_ruf(dom_size);
 
@@ -63,9 +61,9 @@ DataFrame read_dmarc(std::vector< std::string> domains) {
   pctx = opendmarc_policy_connect_init((u_char *)"1.2.3.4", 0);
 
   int pct, adkim, aspf, p, sp;
-  u_char dkim_domain[1000];
-  u_char rua_buf[1000];
-  u_char ruf_buf[1000];
+  u_char dkim_domain[1024];
+  u_char rua_buf[1024];
+  u_char ruf_buf[1024];
   bool ok;
 
   for (unsigned int i=0; i<domains.size(); i++) {
@@ -80,9 +78,9 @@ DataFrame read_dmarc(std::vector< std::string> domains) {
       (void)opendmarc_policy_fetch_aspf(pctx, &aspf);
       (void)opendmarc_policy_fetch_p(pctx, &p);
       (void)opendmarc_policy_fetch_sp(pctx, &sp);
-      (void)opendmarc_policy_fetch_utilized_domain(pctx, &dkim_domain[0], 1000);
-      (void)opendmarc_policy_fetch_rua(pctx, &rua_buf[0], 1000, 1);
-      (void)opendmarc_policy_fetch_ruf(pctx, &ruf_buf[0], 1000, 1);
+      (void)opendmarc_policy_fetch_utilized_domain(pctx, &dkim_domain[0], 1024);
+      (void)opendmarc_policy_fetch_rua(pctx, &rua_buf[0], 1024, 1);
+      (void)opendmarc_policy_fetch_ruf(pctx, &ruf_buf[0], 1024, 1);
     }
 
     v_has_valid_dmarc[i] = ok;
@@ -113,27 +111,26 @@ DataFrame read_dmarc(std::vector< std::string> domains) {
     _["ruf"] = v_ruf
   );
 
+  out.attr("class") = CharacterVector::create("tbl_df", "tbl", "data.frame");
+
   return(out);
 
 }
 
-//' Parse already retrieved DMARC records
-//'
-//' @param domains,dmarc_records character vector of domain names and associated
-//'        DMARC records.
-//' @export
 // [[Rcpp::export]]
-DataFrame parse_dmarc(std::vector< std::string> domains,
+DataFrame int_parse_dmarc(std::vector< std::string> domains,
                       std::vector< std::string> dmarc_records) {
 
   unsigned int dom_size = domains.size();
   std::vector< bool > v_has_valid_dmarc(dom_size);
   std::vector< std::string > v_dkim_domain(dom_size);
-  std::vector< int > v_pct(dom_size);
-  std::vector< int > v_adkim(dom_size);
-  std::vector< int > v_aspf(dom_size);
-  std::vector< int > v_p(dom_size);
-  std::vector< int > v_sp(dom_size);
+
+  IntegerVector v_pct(dom_size);
+  IntegerVector v_adkim(dom_size);
+  IntegerVector v_aspf(dom_size);
+  IntegerVector v_p(dom_size);
+  IntegerVector v_sp(dom_size);
+
   std::vector< std::string > v_rua(dom_size);
   std::vector< std::string > v_ruf(dom_size);
 
@@ -143,9 +140,9 @@ DataFrame parse_dmarc(std::vector< std::string> domains,
   pctx = opendmarc_policy_connect_init((u_char *)"1.2.3.4", 0);
 
   int pct, adkim, aspf, p, sp;
-  u_char dkim_domain[1000];
-  u_char rua_buf[1000];
-  u_char ruf_buf[1000];
+  u_char dkim_domain[1024];
+  u_char rua_buf[1024];
+  u_char ruf_buf[1024];
   bool ok;
 
   for (unsigned int i=0; i<domains.size(); i++) {
@@ -165,9 +162,9 @@ DataFrame parse_dmarc(std::vector< std::string> domains,
       (void)opendmarc_policy_fetch_aspf(pctx, &aspf);
       (void)opendmarc_policy_fetch_p(pctx, &p);
       (void)opendmarc_policy_fetch_sp(pctx, &sp);
-      (void)opendmarc_policy_fetch_utilized_domain(pctx, &dkim_domain[0], 1000);
-      (void)opendmarc_policy_fetch_rua(pctx, &rua_buf[0], 1000, 1);
-      (void)opendmarc_policy_fetch_ruf(pctx, &ruf_buf[0], 1000, 1);
+      (void)opendmarc_policy_fetch_utilized_domain(pctx, &dkim_domain[0], 1024);
+      (void)opendmarc_policy_fetch_rua(pctx, &rua_buf[0], 1024, 1);
+      (void)opendmarc_policy_fetch_ruf(pctx, &ruf_buf[0], 1024, 1);
     }
 
     v_has_valid_dmarc[i] = ok;
@@ -197,6 +194,8 @@ DataFrame parse_dmarc(std::vector< std::string> domains,
     _["rua"] = v_rua,
     _["ruf"] = v_ruf
   );
+
+  out.attr("class") = CharacterVector::create("tbl_df", "tbl", "data.frame");
 
   return(out);
 

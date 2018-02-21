@@ -5,6 +5,17 @@
 
 using namespace Rcpp;
 
+// parse_report_from_file_int
+std::vector< std::string > parse_report_from_file_int(std::string path);
+RcppExport SEXP _dmarc_parse_report_from_file_int(SEXP pathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type path(pathSEXP);
+    rcpp_result_gen = Rcpp::wrap(parse_report_from_file_int(path));
+    return rcpp_result_gen;
+END_RCPP
+}
 // is_dmarc_valid
 std::vector< bool > is_dmarc_valid(std::vector< std::string> domains, std::vector< std::string> dmarc_records);
 RcppExport SEXP _dmarc_is_dmarc_valid(SEXP domainsSEXP, SEXP dmarc_recordsSEXP) {
@@ -17,34 +28,35 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// read_dmarc
-DataFrame read_dmarc(std::vector< std::string> domains);
-RcppExport SEXP _dmarc_read_dmarc(SEXP domainsSEXP) {
+// int_read_dmarc
+DataFrame int_read_dmarc(std::vector< std::string> domains);
+RcppExport SEXP _dmarc_int_read_dmarc(SEXP domainsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector< std::string> >::type domains(domainsSEXP);
-    rcpp_result_gen = Rcpp::wrap(read_dmarc(domains));
+    rcpp_result_gen = Rcpp::wrap(int_read_dmarc(domains));
     return rcpp_result_gen;
 END_RCPP
 }
-// parse_dmarc
-DataFrame parse_dmarc(std::vector< std::string> domains, std::vector< std::string> dmarc_records);
-RcppExport SEXP _dmarc_parse_dmarc(SEXP domainsSEXP, SEXP dmarc_recordsSEXP) {
+// int_parse_dmarc
+DataFrame int_parse_dmarc(std::vector< std::string> domains, std::vector< std::string> dmarc_records);
+RcppExport SEXP _dmarc_int_parse_dmarc(SEXP domainsSEXP, SEXP dmarc_recordsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector< std::string> >::type domains(domainsSEXP);
     Rcpp::traits::input_parameter< std::vector< std::string> >::type dmarc_records(dmarc_recordsSEXP);
-    rcpp_result_gen = Rcpp::wrap(parse_dmarc(domains, dmarc_records));
+    rcpp_result_gen = Rcpp::wrap(int_parse_dmarc(domains, dmarc_records));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_dmarc_parse_report_from_file_int", (DL_FUNC) &_dmarc_parse_report_from_file_int, 1},
     {"_dmarc_is_dmarc_valid", (DL_FUNC) &_dmarc_is_dmarc_valid, 2},
-    {"_dmarc_read_dmarc", (DL_FUNC) &_dmarc_read_dmarc, 1},
-    {"_dmarc_parse_dmarc", (DL_FUNC) &_dmarc_parse_dmarc, 2},
+    {"_dmarc_int_read_dmarc", (DL_FUNC) &_dmarc_int_read_dmarc, 1},
+    {"_dmarc_int_parse_dmarc", (DL_FUNC) &_dmarc_int_parse_dmarc, 2},
     {NULL, NULL, 0}
 };
 

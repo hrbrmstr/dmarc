@@ -82,23 +82,21 @@ is_dmarc_valid(doms, pull(dmarc_recs, data))
 parse_dmarc("linkedin.com", "v=DMARC1; p=reject; rua=mailto:d@rua.agari.com; ruf=mailto:d@ruf.agari.com; pct=100")
 ```
 
-    ##   has_valid_dmarc  dkim_domain pct adkim aspf   p sp                    rua                    ruf
-    ## 1            TRUE linkedin.com 100   114  114 114  0 mailto:d@rua.agari.com mailto:d@ruf.agari.com
+    ## # A tibble: 1 x 9
+    ##   has_valid_dmarc dkim_domain    pct adkim   aspf    p      sp          rua                    ruf                   
+    ##   <lgl>           <fct>        <int> <fct>   <fct>   <fct>  <fct>       <fct>                  <fct>                 
+    ## 1 TRUE            linkedin.com   100 relaxed relaxed reject unspecified mailto:d@rua.agari.com mailto:d@ruf.agari.com
 
 ``` r
 # using the library to get details (WIP)
 read_dmarc(c("linkedin.com", "twitter.com", "google.com", "rud.is", "facebook.com"))
 ```
 
-    ##   has_valid_dmarc  dkim_domain pct adkim aspf   p sp                                                   rua
-    ## 1            TRUE linkedin.com 100   114  114 114  0                                mailto:d@rua.agari.com
-    ## 2            TRUE  twitter.com 100   114  114 114  0                                mailto:d@rua.agari.com
-    ## 3            TRUE   google.com 100   114  114 114  0                    mailto:mailauth-reports@google.com
-    ## 4           FALSE               NA    NA   NA  NA NA                                                      
-    ## 5            TRUE facebook.com 100   114  114 114  0 mailto:d@rua.agari.com,mailto:postmaster@facebook.com
-    ##                      ruf
-    ## 1 mailto:d@ruf.agari.com
-    ## 2 mailto:d@ruf.agari.com
-    ## 3                       
-    ## 4                       
-    ## 5 mailto:d@ruf.agari.com
+    ## # A tibble: 5 x 9
+    ##   has_valid_dmarc dkim_domain    pct adkim   aspf    p      sp          rua                              ruf           
+    ##   <lgl>           <fct>        <int> <fct>   <fct>   <fct>  <fct>       <fct>                            <fct>         
+    ## 1 TRUE            linkedin.com   100 relaxed relaxed reject unspecified mailto:d@rua.agari.com           mailto:d@ruf.…
+    ## 2 TRUE            twitter.com    100 relaxed relaxed reject unspecified mailto:d@rua.agari.com           mailto:d@ruf.…
+    ## 3 TRUE            google.com     100 relaxed relaxed reject unspecified mailto:mailauth-reports@google.… ""            
+    ## 4 FALSE           ""              NA <NA>    <NA>    <NA>   <NA>        ""                               ""            
+    ## 5 TRUE            facebook.com   100 relaxed relaxed reject unspecified mailto:d@rua.agari.com,mailto:p… mailto:d@ruf.…
